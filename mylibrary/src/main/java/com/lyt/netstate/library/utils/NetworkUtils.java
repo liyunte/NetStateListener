@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 
 import com.lyt.netstate.library.NetworkManager;
 import com.lyt.netstate.library.type.NetType;
@@ -43,9 +44,12 @@ public class NetworkUtils {
         if (networkInfo == null) return NetType.NONE;
         int nType = networkInfo.getType();
         if (nType == ConnectivityManager.TYPE_MOBILE) {
-            if (networkInfo.getExtraInfo().toLowerCase().equals("cmnet")) {
-                return NetType.CMNET;
-            } else {
+            String extrainfo = networkInfo.getExtraInfo();
+            if (!TextUtils.isEmpty(extrainfo)){
+                if (extrainfo.toLowerCase().equals("cmnet")){
+                    return NetType.CMNET;
+                }
+            }else {
                 return NetType.CMWAP;
             }
         } else if (nType == ConnectivityManager.TYPE_WIFI) {
